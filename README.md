@@ -1,57 +1,55 @@
-# DA-IBM - Python Project - web scraping and parsing
-IBM Data Analyst Certification
+# DA-IBM — Python Data Analysis Projects
 
-# Revenue & Stock Price Dashboard — Tesla vs GameStop
-
-A project for extracting and visualizing financial data: historical stock prices are pulled via the `yfinance` API library, while quarterly revenue data is obtained through web scraping with `BeautifulSoup`. The result is a comparative "stock price + revenue" dashboard for two companies: Tesla and GameStop.
+A collection of data analysis projects completed as part of the IBM/Skills Network "Python Project for Data Science" and "Data Analysis with Python" courses. Each notebook covers a different stage of a typical data analysis workflow: data extraction, cleaning, exploratory analysis, and predictive modeling.
 
 ## Contents
 
-- `Revenue_Data_and_Building_a_Dashboard.ipynb` — main notebook with the full analysis pipeline
+| Notebook | Topic | Techniques |
+|---|---|---|
+| `Revenue_Data_and_Building_a_Dashboard_Sergey_Lyskin.ipynb` | Stock price & revenue dashboard (Tesla vs GameStop) | API data extraction (`yfinance`), web scraping (`BeautifulSoup`), data visualization (`matplotlib`) |
+| `House_Sales_in_King_Count_USA_Sergey_Lyskin.ipynb` | House price prediction (King County, USA) | Data wrangling, exploratory data analysis, linear regression, pipelines, model evaluation (`pandas`, `seaborn`, `scikit-learn`) |
 
-## What the project does
+---
 
-1. **Stock price extraction** — via `yfinance` (`Ticker.history(period="max")`) for Tesla (`TSLA`) and GameStop (`GME`)
-2. **Revenue data extraction** — web scraping an HTML page (`requests` + `BeautifulSoup`): locating the correct table, parsing `<tr>`/`<td>` rows, and assembling the results into a `pandas.DataFrame`
-3. **Data cleaning** — stripping `$` and `,` characters from the `Revenue` column, dropping empty/null values
-4. **Visualization** — two synchronized charts (stock price and revenue over time) for each company
+## 1. Revenue Data & Building a Dashboard (Tesla vs GameStop)
 
-## Tech stack
+A project for extracting and visualizing financial data: historical stock prices are pulled via the `yfinance` API library, while quarterly revenue data is obtained through web scraping with `BeautifulSoup`. The result is a comparative "stock price + revenue" dashboard for two companies.
 
-`Python` · `pandas` · `yfinance` · `requests` · `BeautifulSoup` · `matplotlib`
+**What it does:**
+1. Extracts stock price history via `yfinance` (`Ticker.history(period="max")`) for Tesla (`TSLA`) and GameStop (`GME`)
+2. Extracts revenue data via web scraping (`requests` + `BeautifulSoup`): locating tables, parsing `<tr>`/`<td>` rows, assembling into a `pandas.DataFrame`
+3. Cleans the data — strips `$` and `,` from the `Revenue` column, drops empty/null values
+4. Builds two synchronized charts (stock price and revenue over time) per company
+
+**Tech stack:** `pandas` · `yfinance` · `requests` · `BeautifulSoup` · `matplotlib`
+
+---
+
+## 2. House Sales in King County, USA
+
+A data analyst project for a Real Estate Investment Trust: analyzing and predicting residential house prices in King County (which includes Seattle), based on a dataset of homes sold between May 2014 and May 2015.
+
+**What it does:**
+1. **Data wrangling** — loads the dataset, inspects data types, drops irrelevant columns (`id`, `Unnamed: 0`), handles missing values in `bedrooms`/`bathrooms` (mean imputation)
+2. **Exploratory data analysis** — value counts by number of floors, boxplot of price by waterfront view, regression plot of price vs. `sqft_above`, correlation analysis
+3. **Model development** — fits linear regression models using single and multiple features; builds a `Pipeline` combining `StandardScaler`, `PolynomialFeatures`, and `LinearRegression`
+4. **Model evaluation and refinement** — train/test split, Ridge regression with regularization, polynomial transform + Ridge regression, R² comparison
+
+**Tech stack:** `pandas` · `numpy` · `seaborn` · `matplotlib` · `scikit-learn`
+
+**Dataset source:** [Kaggle — House Sales in King County, USA](https://www.kaggle.com/harlfoxem/housesalesprediction)
+
+---
 
 ## How to run
 
 ```bash
-pip install -r requirements.txt
-jupyter notebook Revenue_Data_and_Building_a_Dashboard.ipynb
+pip install pandas numpy matplotlib seaborn scikit-learn yfinance requests beautifulsoup4 html5lib lxml
+jupyter notebook
 ```
 
-## Sample code
-
-```python
-tesla = yf.Ticker("TSLA")
-tesla_data = tesla.history(period="max")
-tesla_data.reset_index(inplace=True)
-```
-
-```python
-soup = BeautifulSoup(html_data, "html5lib")
-tesla_revenue = pd.DataFrame(columns=["Date", "Revenue"])
-
-for row in soup.find_all("tbody")[1].find_all("tr"):
-    col = row.find_all("td")
-    tesla_revenue = pd.concat([
-        tesla_revenue,
-        pd.DataFrame({"Date": [col[0].text], "Revenue": [col[1].text]})
-    ], ignore_index=True)
-```
-
-## Key takeaways
-
-- Demonstrates two different approaches to data extraction: via a ready-made API (`yfinance`) versus web scraping (`BeautifulSoup`) — in practice, the choice depends on whether the needed data is available through an official source
-- Produces a clear dashboard comparing a company's stock price trend against its actual revenue over the same period
+Then open either notebook from the Jupyter file browser.
 
 ## Source
 
-This project was completed as part of the IBM/Skills Network course "Python Project for Data Science."
+Both projects were completed as part of IBM/Skills Network courses on Coursera ("Python Project for Data Science" and "Data Analysis with Python").
