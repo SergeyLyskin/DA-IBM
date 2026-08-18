@@ -1,4 +1,4 @@
-# DA-IBM
+# DA-IBM - Python Project - web scraping and parsing
 IBM Data Analyst Certification
 
 # Revenue & Stock Price Dashboard — Tesla vs GameStop
